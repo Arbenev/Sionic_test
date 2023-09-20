@@ -2,16 +2,17 @@
 
 namespace app\controllers;
 
-use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Sionic\City;
+use app\models\Sionic\Product;
 
 class SiteController extends Controller
 {
+
+    const ROWS_PER_PAGE = 25;
+
     /**
      * {@inheritdoc}
      */
@@ -61,68 +62,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
-    }
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
+        $page = \Yii::$app->getRequest()->get('page', 1);
+        $cities = City::find()->orderBy('id')->asArray()->all();
+        $rows = Product::find()
+                ->orderBy('id desc')
+                ->limit(self::ROWS_PER_PAGE)
+                ->offset(($page - 1) * self::ROWS_PER_PAGE)
+                ->asArray()
+                ->all();
+        $count = Product::find()->count();
+        $pages = new \yii\data\Pagination(['totalCount' => $count]);
+        $params = [
+            'cities' => $cities,
+            'rows' => $rows,
+            'count' => $count,
+            'length' => self::ROWS_PER_PAGE,
+            'pages' => $pages,
+        ];
+        return $this->render('index', $params);
     }
 }

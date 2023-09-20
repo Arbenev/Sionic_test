@@ -1,51 +1,73 @@
 <?php
-
 /** @var yii\web\View $this */
-
-$this->title = 'My Yii Application';
+$this->title = Yii::$app->name;
 ?>
 <div class="site-index">
 
     <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
+        <h1 class="display-4">Sionic test task</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Total: <?= $count ?></p>
 
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
+            <div class="col-lg-12 mb-3">
+                <h2>List of products</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <table id="main">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Название</th>
+                            <th>Код</th>
+                            <th>Вес</th>
+                            <th>Взаимозаменяемости</th>
+                            <?php
+                            foreach ($cities as $city) {
+                                ?>
+                                <th>Количество (<?= $city['name'] ?>)</th>
+                                <th>Цена (<?= $city['name'] ?>)</th>
+                                <?php
+                            }
+                            ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($rows as $row) {
+                            ?>
+                            <tr>
+                                <td><?= $row['id'] ?></td>
+                                <td><?= $row['name'] ?></td>
+                                <td><?= $row['code'] ?></td>
+                                <td><?= $row['weight'] ?></td>
+                                <td><?= $row['usage'] ?></td>
+                                <?php
+                                foreach ($cities as $city) {
+                                    ?>
+                                    <td><?= $row['quantity_' . $city['suffix']] ?></td>
+                                    <td><?= $row['price_' . $city['suffix']] ?></td>
+                                    <?php
+                                }
+                                ?>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <div class="col-lg-12 mb-3">
+                <?php
+                $pagesCount = $count / $length;
+                echo yii\widgets\LinkPager::widget([
+                    'pagination' => $pages,
+                ]);
+                ?>
+                </div>
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
             </div>
         </div>
 

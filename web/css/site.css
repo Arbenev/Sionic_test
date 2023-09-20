@@ -86,3 +86,20 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+table {
+    width: 100%;
+    border: #212529 solid 2px !important;
+    font-size: 80%;
+}
+#main thead th{
+    padding: 2px;
+    border: #212529 solid 1px !important;
+}
+#main tbody td{
+    padding: 2px;
+    border: #212529 solid 1px !important;
+    font-size: 60%;
+}
+.pagination li {
+    padding: 1ex;
+}

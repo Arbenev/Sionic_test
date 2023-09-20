@@ -36,33 +36,6 @@ class Product extends \yii\db\ActiveRecord
             throw new \yii\base\Exception('No code for a product');
         }
         $code = $info['code'];
-//        $db = self::getDb();
-//        $fields = [];
-//        $values = [];
-//        $updates = [];
-//        foreach ($info as $field => $value) {
-//            $fields[] = '`' . $field . '`';
-//            $values[] = '"' . addslashes($value) . '"';
-//            $updates[] = '`' . $field . '`="' . addslashes($value) . '"';
-//        }
-//        $sql = 'INSERT INTO ' . self::tableName() . ' (' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ') ON DUPLICATE KEY UPDATE ' . implode(',', $updates);
-//        $db->createCommand($sql)
-//                ->execute()
-//                ;
-//
-//
-//        $product = $db->createCommand('SELECT * FROM ' . self::tableName() . ' WHERE `code`=' . $code)
-//                ->queryOne()
-//        ;
-//        unset($product);
-//        print_r($product);
-//
-//        $product = self::findByCondition(['code' => $code])->asArray()->one();
-//        if (!$product) {
-//            self::getDb()->createCommand()->insert(self::tableName(), $info);
-//        }else{
-//            self::getDb()->createCommand()->update(self::tableName(), $info);
-//        }
         $product = self::findOne(['code' => $code]);
         if (!$product) {
             $product = new self();
